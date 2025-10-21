@@ -1,0 +1,3 @@
+FROM openjdk:17-jdk-slim
+COPY target/order-service.jar order-service.jar
+ENTRYPOINT ["java","-jar","/order-service.jar"]
