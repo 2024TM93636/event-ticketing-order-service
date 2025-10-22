@@ -11,4 +11,6 @@ public interface OrderService {
     Order cancelOrder(Long orderId);
     Order getOrder(Long orderId);
     List<Ticket> getTickets(Long orderId);
+    List<Order> getAllOrders();
+    void deleteOrder(Long orderId);
 }

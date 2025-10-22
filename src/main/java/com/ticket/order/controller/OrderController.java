@@ -36,5 +36,16 @@ public class OrderController {
     public ResponseEntity<List<Ticket>> getTickets(@PathVariable Long id) {
         return ResponseEntity.ok(orderService.getTickets(id));
     }
+    @GetMapping
+    public ResponseEntity<List<Order>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        orderService.deleteOrder(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
 
