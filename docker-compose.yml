@@ -5,7 +5,7 @@ services:
     container_name: order-db
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_PASSWORD: experion@123
       POSTGRES_DB: order_service_db
     ports:
       - "5433:5432"

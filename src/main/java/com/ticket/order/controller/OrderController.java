@@ -18,27 +18,28 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<Order> placeOrder(@RequestBody OrderRequest request) {
+    public ResponseEntity<Order> createOrder(@RequestBody OrderRequest request) {
         return ResponseEntity.ok(orderService.createOrder(request));
     }
 
-    @PostMapping("/{id}/cancel")
-    public ResponseEntity<Order> cancelOrder(@PathVariable Long id) {
-        return ResponseEntity.ok(orderService.cancelOrder(id));
+    @GetMapping
+    public ResponseEntity<List<Order>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrder(@PathVariable Long id) {
+    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
         return ResponseEntity.ok(orderService.getOrder(id));
     }
 
     @GetMapping("/{id}/tickets")
     public ResponseEntity<List<Ticket>> getTickets(@PathVariable Long id) {
-        return ResponseEntity.ok(orderService.getTickets(id));
+        return ResponseEntity.ok(orderService.getTicketsByOrder(id));
     }
-    @GetMapping
-    public ResponseEntity<List<Order>> getAllOrders() {
-        return ResponseEntity.ok(orderService.getAllOrders());
+
+    @PostMapping("/{id}/cancel")
+    public ResponseEntity<Order> cancelOrder(@PathVariable Long id) {
+        return ResponseEntity.ok(orderService.cancelOrder(id));
     }
 
     @DeleteMapping("/{id}")
@@ -47,5 +48,9 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
-}
+    @GetMapping("/health")
+    public String healthCheck() {
+        return "Order Service is up and running!";
+    }
 
+}
