@@ -1,31 +1,50 @@
-version: "3.8"
-
+version: '3.9'
 services:
   postgres:
     image: postgres:15
     container_name: event_ticketing_db
+    restart: always
     environment:
+      POSTGRES_DB: event_ticketing
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: experion@123
-      POSTGRES_DB: event_ticketing
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d event_ticketing"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: event_ticketing_pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@event.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8081:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   order-service:
     build: .
     container_name: event_ticketing_order_service
+    restart: always
     ports:
       - "8082:8082"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/event_ticketing
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: experion@123
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_JPA_SHOW_SQL: "true"
       SERVER_PORT: 8082
 
 volumes:

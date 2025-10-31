@@ -7,7 +7,6 @@ import com.ticket.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -19,7 +18,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody OrderRequest request) {
-        return ResponseEntity.ok(orderService.createOrder(request));
+        return ResponseEntity.status(201).body(orderService.createOrder(request));
     }
 
     @GetMapping
@@ -49,8 +48,7 @@ public class OrderController {
     }
 
     @GetMapping("/health")
-    public String healthCheck() {
-        return "Order Service is up and running!";
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("Order Service is up and running!");
     }
-
 }
